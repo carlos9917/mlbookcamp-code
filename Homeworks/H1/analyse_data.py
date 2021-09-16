@@ -10,7 +10,7 @@ data2015 = data[data.Year >= 2015]
 missing = data2015["Engine HP"].shape[0] - data2015["Engine HP"].dropna().shape[0]
 print(f"Missing values {missing}")
 meanHP = data2015["Engine HP"].mean()
-meanHP_after = data["Engine HP"].fillna(value=meanHP).mean()
+meanHP_after = data["Engine HP"].fillna(meanHP).mean()
 print(f"Mean before filling: {meanHP}")
 print(f"Mean after filling: {meanHP_after}")
 rolls = data[data["Make"] == "Rolls-Royce"]

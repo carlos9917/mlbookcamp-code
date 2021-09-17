@@ -1,4 +1,4 @@
-#Homework 2
+#Homework 2. Questions 1-4
 import numpy as np
 import pandas as pd
 import reg_utils as rutils
@@ -73,15 +73,3 @@ for r in [0, 0.000001, 0.0001, 0.001, 0.01, 0.1, 1, 5, 10]:
 
 
 
-"""
-Question 5
-We used seed 42 for splitting the data. Let's find out how selecting the seed influences our score.
-Try different seed values: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].
-For each seed, do the train/validation/test split with 60%/20%/20% distribution.
-Fill the missing values with 0 and train a model without regularization.
-For each seed, evaluate the model on the validation dataset and collect the RMSE scores.
-What's the standard deviation of all the scores? To compute the standard deviation, use np.std.
-Round the result to 3 decimal digits (round(std, 3))
-
-
-"""

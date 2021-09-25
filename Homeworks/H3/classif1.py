@@ -16,6 +16,7 @@ base=['neighbourhood_group', 'room_type', 'latitude', 'longitude', 'price', 'min
 sel_col="neighbourhood_group"
 most_common = data[sel_col].mode()[0]
 print(f"Most common observation in {sel_col}: {most_common}")
+df = data.copy()
 
 
 """
@@ -24,18 +25,14 @@ Split your data in train/val/test sets, with 60%/20%/20% distribution.
 Use Scikit-Learn for that (the train_test_split function) and set the seed to 42.
 Make sure that the target value ('price') is not in your dataframe.
 """
-
-df = data[base].copy() #only consider the list of variables given
-df = df.fillna(0)
-#del df["price"]
-#note, seed is set to 42 by default here
 from sklearn.model_selection import train_test_split
-df_full_train, df_test = train_test_split(df, test_size=0.2, random_state=42)
-df_train, df_val = train_test_split(df_full_train, test_size=0.2, random_state=42)
+
+df_full_train, df_test = train_test_split(df, test_size=0.2, random_state=1)
+df_train, df_val = train_test_split(df_full_train, test_size=0.2, random_state=1)
+
 df_train = df_train.reset_index(drop=True)
 df_val = df_val.reset_index(drop=True)
 df_test = df_test.reset_index(drop=True)
-
 y_train = df_train.price.values
 y_val = df_val.price.values
 y_test = df_test.price.values
@@ -43,19 +40,19 @@ y_test = df_test.price.values
 del df_train['price']
 del df_val['price']
 del df_test['price']
-categorical_columns = list(df[base].dtypes[df.dtypes == 'object'].index)
-#All the rest should be the numerical?
-numerical_columns = ['latitude','longitude', 'minimum_nights', 'number_of_reviews', 'reviews_per_month', 'calculated_host_listings_count', 'availability_365']
 
+categorical_columns = list(df[base].dtypes[df[base].dtypes == 'object'].index)
+#print(categorical_columns)
+#numerical_columns = df_train.columns - categorical_columns
+numerical_columns = list(df[base].dtypes[df[base].dtypes == 'float'].index) + list(df[base].dtypes[df[base].dtypes == 'int'].index)
+numerical_columns.remove("price")
+#print(f"Categorical columns: {categorical_columns}")
+#print(f"Numerical columns: {numerical columns}")
 
-"""
-
-Question 2
-Create the correlation matrix for the numerical features of your train dataset.
-In a correlation matrix, you compute the correlation coefficient between every pair of features in the dataset.
-What are the two features that have the biggest correlation in this dataset?
-
-"""
+#corrs=df_full_train[categorical_columns + numerical_columns].corrwith(df_full_train.price).to_frame('correlation')
+#print("Vars with biggest correlation")
+#print(corrs)
+#df[x].corrwith(y)
 
 ##
 ##Q3
@@ -70,6 +67,7 @@ for k in df["price"].index:
 
 from sklearn.metrics import mutual_info_score
 #Apply the mutual info score to price
+#categorical_columns=["room_type","neighbourhood_group"]
 def mutual_info_price_score(series):
     return mutual_info_score(series, df_full_train.price)
 mi = df_full_train[categorical_columns].apply(mutual_info_price_score)
@@ -87,8 +85,21 @@ from sklearn.feature_extraction import DictVectorizer
 
 dv = DictVectorizer(sparse=False)
 
-train_dict = df_train[categorical + numerical].to_dict(orient='records')
+#train_dict = df_train[categorical_columns + numerical_columns].to_dict(orient='records')
+train_dict = df_train[categorical_columns].to_dict(orient='records')
 X_train = dv.fit_transform(train_dict)
 
-val_dict = df_val[categorical + numerical].to_dict(orient='records')
+val_dict = df_val[categorical_columns].to_dict(orient='records')
 X_val = dv.transform(val_dict)
+
+from sklearn.linear_model import LogisticRegression
+#model = LogisticRegression(solver='lbfgs')
+#model = LogisticRegression(solver='lbfgs', C=1.0, random_state=42)
+model = LogisticRegression(C=1.0, random_state=42,max_iter=500)
+
+# solver='lbfgs' is the default solver in newer version of sklearn
+# for older versions, you need to specify it explicitly
+model.fit(X_train, y_train)
+
+y_pred = model.predict_proba(X_val)[:, 1]
+

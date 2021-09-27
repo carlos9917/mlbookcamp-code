@@ -1,4 +1,5 @@
-#Homework 3. Questions 1-6
+#This one is just for trying log reg again, since it is not converging in the original
+
 import numpy as np
 import pandas as pd
 import sys
@@ -37,9 +38,9 @@ y_test = df_test.price.values
 # Make price binary
 # create variable above_average, which is 1 if price above 152
 #Doing this before dropping price  below
-df_train['above_average'] = np.where(df_train['price'] < 150, 1, 0)
-df_val['above_average'] = np.where(df_val['price'] < 150, 1, 0)
-df_test['above_average'] = np.where(df_test['price'] < 150, 1, 0)
+df_train['above_average'] = np.where(df_train['price'] < 152, 1, 0)
+df_val['above_average'] = np.where(df_val['price'] < 152, 1, 0)
+df_test['above_average'] = np.where(df_test['price'] < 152, 1, 0)
 
 categorical_columns = list(df[base].dtypes[df[base].dtypes == 'object'].index)
 numerical_columns = list(df[base].dtypes[df[base].dtypes == 'float'].index) + list(df[base].dtypes[df[base].dtypes == 'int'].index)

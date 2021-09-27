@@ -119,28 +119,28 @@ def use_log_reg():
     print(f'Accuracy of logistic regression  classifier on test set: {score}')
     #print(f"Price accuracy {model.score(x_test,)}")
 
-### Question 5
+### Question 5. See the part2
 #use_log_reg()
-for feature in df_train.columns:
-    print(f"Dropping {feature} from X_train")
-    df.drop(columns[feature],inplace=True)
-    df_full_train, df_test = train_test_split(df, test_size=0.2, random_state=42)
-    df_train, df_val = train_test_split(df_full_train, test_size=0.25, random_state=42)
-    
-    df_train = df_train.reset_index(drop=True)
-    df_val = df_val.reset_index(drop=True)
-    df_test = df_test.reset_index(drop=True)
-    
-    y_train = df_train.price.values
-    y_val = df_val.price.values
-    y_test = df_test.price.values
-    
-    del df_train['price']
-    del df_val['price']
-    del df_test['price']
-
-    use_log_reg()
-    # 
+#for feature in df_train.columns:
+#    print(f"Dropping {feature} from X_train")
+#    df.drop(columns[feature],inplace=True)
+#    df_full_train, df_test = train_test_split(df, test_size=0.2, random_state=42)
+#    df_train, df_val = train_test_split(df_full_train, test_size=0.25, random_state=42)
+#    
+#    df_train = df_train.reset_index(drop=True)
+#    df_val = df_val.reset_index(drop=True)
+#    df_test = df_test.reset_index(drop=True)
+#    
+#    y_train = df_train.price.values
+#    y_val = df_val.price.values
+#    y_test = df_test.price.values
+#    
+#    del df_train['price']
+#    del df_val['price']
+#    del df_test['price']
+#
+#    use_log_reg()
+#    # 
 """
 
 * We have 9 features: 7 numerical features and 2 categorical.
@@ -188,14 +188,29 @@ del df_val['price']
 del df_test['price']
 
 from sklearn.linear_model import Ridge
-for alpha in [0, 0.01, 0.1, 1, 10]:
-    reg = Ridge(alpha=alpha)
-    reg.fit(X_train, y_train)
-    y_pred = reg.predict(X_val) #[:, 1]
-    #reg = LinearRegression().fit(X_train, y_train)
-    #print(reg.score(X_val, y_val))
-    #w_0, w = rutils.train_linear_regression_reg(X_train, y_train,r)
-    #y_pred = w_0 + X_train.dot(w)
-    score = round(rmse(y_val, y_pred),3)
-    print(f'validation using alpha={alpha}: {score}')
+#for alpha in [0, 0.01, 0.1, 1, 10]:
+#    reg = Ridge(alpha=alpha)
+#    reg.fit(X_train, y_train)
+#    y_pred = reg.predict(X_val) #[:, 1]
+#    #reg = LinearRegression().fit(X_train, y_train)
+#    #print(reg.score(X_val, y_val))
+#    #w_0, w = rutils.train_linear_regression_reg(X_train, y_train,r)
+#    #y_pred = w_0 + X_train.dot(w)
+#    score = round(rmse(y_val, y_pred),3)
+#    print(f'validation using alpha={alpha}: {score}')
+
+
+
+from sklearn.metrics import accuracy_score
+
+#for cur_alpha in [0, 0.01, 0.1, 1, 10]:
+for cur_alpha in [0.001, .01, .05, .1, .5, 1, 5, 10, 50, 100, 500]:
+
+    # fit (using Ridge Regression), predict, and score
+    fit_ridge = Ridge(alpha=cur_alpha).fit(X_train, y_train)
+    y_pred = fit_ridge.predict(X_val) #.reshape(1,-1)[0]
+    score = round(rmse(y_pred, y_val),3)
+    print(f'validation using alpha={cur_alpha}: {score}')
+
+
 

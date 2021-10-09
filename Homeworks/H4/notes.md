@@ -3,3 +3,7 @@ https://towardsdatascience.com/feature-selection-techniques-for-classification-a
 
 Some useful notes on alternative approaches
 https://github.com/alexeygrigorev/datascience-recruitment-challenges
+
+Solution:
+
+

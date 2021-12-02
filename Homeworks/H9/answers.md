@@ -18,3 +18,15 @@ Step 2/3 : RUN pip install keras-image-helper
 ----------------
 # Q6
 Build the docker container using build.sh
+Run container with:
+docker run -it --rm -p 8080:8080 homework9:latest
+Should see:
+```
+INFO[0000] exec '/var/runtime/bootstrap' (cwd=/var/task, handler=) 
+```
+
+While running container, run in another window the script test.py to check result
+from prediction on image provided
+Result:
+[0.7210462093353271]
+

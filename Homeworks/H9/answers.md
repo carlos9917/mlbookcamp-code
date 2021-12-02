@@ -6,8 +6,10 @@ Output index: 13
 
 # Q3
 no comprende...
+See notebook.
 
 # Q4
+See notebook
 
 # Q5
 Sending build context to Docker daemon  330.8kB

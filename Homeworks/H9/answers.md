@@ -15,3 +15,6 @@ Step 1/3 : FROM agrigorev/zoomcamp-cats-dogs-lambda:v2
  ---> 322fc756f258
 Step 2/3 : RUN pip install keras-image-helper
 
+----------------
+# Q6
+Build the docker container using build.sh

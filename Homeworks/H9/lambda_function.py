@@ -4,9 +4,8 @@
 import tflite_runtime.interpreter as tflite
 from keras_image_helper import create_preprocessor
 
-
 preprocessor = create_preprocessor('xception', target_size=(150, 150))
-interpreter = tflite.Interpreter(model_path='clothing-model.tflite')
+interpreter = tflite.Interpreter(model_path="dogs_cats_10_0.687.tflite")
 interpreter.allocate_tensors()
 
 input_index = interpreter.get_input_details()[0]['index']
@@ -40,7 +39,9 @@ def predict(url):
 
     float_predictions = preds[0].tolist()
 
-    return dict(zip(classes, float_predictions))
+    #return dict(zip(classes, float_predictions))
+    #return dict(float_predictions)
+    return float_predictions
 
 
 def lambda_handler(event, context):
